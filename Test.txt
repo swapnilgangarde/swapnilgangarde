@@ -17,3 +17,41 @@ handleLogin(event){
             });
         }
     } 
+    
+    isEmailExistfunction(){
+        const myInput = this.template.querySelector('[data-id="inputUsername"]');
+        const spnEmailErr =  this.template.querySelector('[data-id="spnEmailErr"]');
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        let btnSubmit = this.template.querySelector('[data-id="btnSubmit"]');  
+        myInput.classList.remove("TextFeild--error");
+        this.errorMessage="";
+        if (!this.username.match(mailformat))
+        {
+            myInput.classList.add("TextFeild--error");
+            spnEmailErr.innerHTML   ="Invalid mail format";   
+            btnSubmit.disabled = true;                
+        }   
+        else
+        {
+        isEmailExist({ username: this.username})        
+        .then((result) => {
+            if(!result){
+                myInput.classList.add("TextFeild--error");
+                spnEmailErr.innerHTML   ="Username not exist";
+                btnSubmit.disabled = true;                
+            }
+            else{
+                spnEmailErr.innerHTML   ="";   
+                if(this.password=="")
+                    btnSubmit.disabled = true;   
+                    else             
+                    btnSubmit.disabled = false;   
+                }
+        })
+        .catch((error) => {              
+            this.error = error;      
+            this.errorCheck = true;
+            this.errorMessage = error.body.message;            
+        });
+        }          
+    }
