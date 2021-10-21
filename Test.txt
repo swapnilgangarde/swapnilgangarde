@@ -1,2 +1,19 @@
 This is test file.
 Added new method.
+handleLogin(event){ 
+        this.errorMessage="";
+       if(this.username && this.password){
+        event.preventDefault();        
+        doLogin({ username: this.username, password: this.password })
+            .then((result) => {
+                let url = ngcx_HomePageUrl;
+                console.log('##URL '+url);
+                window.location.href = url;
+            })
+            .catch((error) => {
+                this.error = error;      
+                this.errorCheck = true;
+                this.errorMessage = error.body.message;
+            });
+        }
+    } 
